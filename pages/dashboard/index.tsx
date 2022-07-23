@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
-import Link from "next/link";
 
 // Components
-import { FaWallet, FaPlus } from "react-icons/fa";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import TaskComponent from "../../components/Partials/TaskComponent";
 
