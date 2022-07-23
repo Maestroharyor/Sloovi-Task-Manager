@@ -1,11 +1,23 @@
+import { useLayoutEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { connect, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
 // Components
 import { FaTasks, FaSignOutAlt } from "react-icons/fa";
 import { MdMenu } from "react-icons/md";
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useToast,
+} from "@chakra-ui/react";
+
+// Data and Functions
+import { authData, userData } from "../../data/dataTypes";
+import { logOutSuccess } from "../../store/auth/action";
 
 const sidebarLinks = [
   {
@@ -15,10 +27,32 @@ const sidebarLinks = [
   },
 ];
 
-type Props = {};
+type Props = {
+  auth?: authData;
+  user?: userData;
+};
 
-const Sidebar = (props: Props) => {
+const Sidebar = ({ auth, user }: Props) => {
+  const toast = useToast();
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  useLayoutEffect(() => {
+    !auth?.isLoggedIn && router.push("/auth/login");
+  }, []);
+
+  const logout = () => {
+    toast({
+      title: "Loggin you out...",
+      status: "info",
+      isClosable: true,
+      position: "top",
+    });
+    setTimeout(() => {
+      dispatch(logOutSuccess());
+      router.push("/");
+    }, 1000);
+  };
   return (
     <>
       <aside className="md:col-span-3 lg:col-span-2 bg-white h-full md:block pb-8 hidden rounded-r-2xl shadow relative">
@@ -67,7 +101,10 @@ const Sidebar = (props: Props) => {
           </div>
         </div>
 
-        <button className="bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out hidden md:inline-flex items-center gap-3 fixed bottom-[20px] left-[20px] text-white px-5 py-2 rounded">
+        <button
+          className="bg-red-500 hover:bg-red-600 transition duration-300 ease-in-out hidden md:inline-flex items-center gap-3 fixed bottom-[20px] left-[20px] text-white px-5 py-2 rounded"
+          onClick={logout}
+        >
           <span>Log Out</span>
           <FaSignOutAlt />
         </button>
@@ -99,7 +136,10 @@ const Sidebar = (props: Props) => {
               </MenuItem>
             ))}
             <MenuItem>
-              <button className="text-gray-600 items-center flex gap-3 w-full px-8 hover:text-red-600 transition duration-300 ease-in-out py-2">
+              <button
+                className="text-gray-600 items-center flex gap-3 w-full px-8 hover:text-red-600 transition duration-300 ease-in-out py-2 w-full"
+                onClick={logout}
+              >
                 <FaSignOutAlt />
                 <span>Log Out</span>
               </button>
@@ -111,4 +151,8 @@ const Sidebar = (props: Props) => {
   );
 };
 
-export default Sidebar;
+const mapStateToProps = (state: any) => {
+  return state;
+};
+
+export default connect<authData, userData>(mapStateToProps)(Sidebar);

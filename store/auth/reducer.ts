@@ -2,11 +2,10 @@ import { actionTypes } from "./action";
 
 export const initState = {
   isLoggedIn: false,
-  id: "",
-  firstname: "",
-  lastname: "",
-  email: "",
   token: "",
+  icon: "",
+  company_id: "",
+  user_id: "",
 };
 
 function reducer(state = initState, action:any) {
@@ -16,23 +15,20 @@ function reducer(state = initState, action:any) {
       return {
         ...state,
         ...{ isLoggedIn: true },
-        ...{ id: action.user.id ? action.user.id : action.user._id },
-        ...{ firstname: action.user.firstname },
-        ...{ lastname: action.user.lastname ? action.user.lastname : "" },
-        ...{ username: action.user.username },
-        ...{ email: action.user.email },
         ...{ token: action.user.token },
+        ...{ icon: action.user.icon },
+        ...{ company_id: action.user.company_id },
+        ...{ user_id: action.user.user_id },
       };
     case actionTypes.LOGOUT_SUCCESS:
       // console.log(action)
       return {
         ...state,
-        ...{ isLoggedIn: false },
-        ...{ id: "" },
-        ...{ firstname: "" },
-        ...{ lastname: "" },
-        ...{ username: "" },
+                ...{ isLoggedIn: false },
         ...{ token: "" },
+        ...{ icon: "" },
+        ...{ company_id: "" },
+        ...{ user_id: "" },
       };
     default:
       return state;

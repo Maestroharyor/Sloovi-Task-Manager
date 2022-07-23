@@ -1,11 +1,17 @@
 import Link from "next/link";
+import { connect, useDispatch } from "react-redux";
 
 // Components
-import { FaTasks } from "react-icons/fa";
+import { FaTachometerAlt, FaTasks } from "react-icons/fa";
+import { authData } from "../../data/dataTypes";
 
-type Props = {};
+type Props = {
+  auth?: authData;
+};
 
-const MainHeader = (props: Props) => {
+const MainHeader = ({ auth }: Props) => {
+  const dispatch = useDispatch();
+
   return (
     <header className="hidden md:block sticky top-0 bg-white z-[20]">
       <nav className="flex px-5 py-2 justify-between items-center">
@@ -29,15 +35,28 @@ const MainHeader = (props: Props) => {
         </div>
 
         <div className="inline-flex gap-3">
-          <Link href={"/auth/login"}>
-            <a className="font-bold inline-block px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white hover:text-white transition duration-300 ease-in-out rounded text-xl">
-              Login
-            </a>
-          </Link>
+          {!auth?.isLoggedIn ? (
+            <Link href={"/auth/login"}>
+              <a className="font-bold inline-block px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white hover:text-white transition duration-300 ease-in-out rounded text-xl">
+                Login
+              </a>
+            </Link>
+          ) : (
+            <Link href={"/auth/login"}>
+              <a className="font-bold inline-block px-3 py-2 bg-slate-500 hover:bg-slate-600 text-white hover:text-white transition duration-300 ease-in-out rounded text-xl inline-flex gap-2 items-center">
+                <FaTachometerAlt />
+                <span>Dashboard</span>
+              </a>
+            </Link>
+          )}
         </div>
       </nav>
     </header>
   );
 };
 
-export default MainHeader;
+const mapStateToProps = (state: any) => {
+  return state;
+};
+
+export default connect<authData>(mapStateToProps)(MainHeader);

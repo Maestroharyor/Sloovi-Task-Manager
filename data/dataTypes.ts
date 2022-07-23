@@ -1,10 +1,13 @@
 export interface authData {
   isLoggedIn: boolean;
-  id: string;
-  firstname: string;
-  lastname: string;
-  email: string;
   token: string;
+  icon: string;
+  company_id: string;
+  user_id: string;
+}
+
+export interface userData{
+  
 }
 
 export interface taskData{

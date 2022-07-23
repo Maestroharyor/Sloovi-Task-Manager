@@ -47,8 +47,8 @@ const ComingSoon: NextPage = () => {
     <DefaultLayout title="Construction in Progress">
       <div className="h-full px-5 flex flex-col items-center justify-center gap-y-10 text-center pt-10">
         <Image
-          src="/svgs/vault.svg"
-          alt="Fovero Digital Technologies is coming soon"
+          src="/svgs/tasks.svg"
+          alt="Ayomide Odewale (Maestro)"
           width={520}
           height={309}
         />
