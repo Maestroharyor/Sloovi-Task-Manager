@@ -3,9 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
     env: {
-    title: "Veegil Banking App",
-    tagline: "The Banking App For you",
-    titleDescription: "Veegil Baking App"
+    title: "Sloovi task Manager",
+    tagline: "The task managetr app For you",
+    titleDescription: "Sloovi Task Manager"
   },
   i18n: {
     locales: ["en"],
