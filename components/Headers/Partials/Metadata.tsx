@@ -32,21 +32,7 @@ const Metadata = ({ title, metadescription, imageUrl }: Props) => {
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="description" content={`${description}`} />
       <title>{titleView}</title>
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary" key="twcard" />
-      <meta name="twitter:creator" content={"foverodigitech"} key="twhandle" />
-
-      {/* Open Graph */}
-      <meta property="og:url" content={router.pathname} key="ogurl" />
-      <meta property="og:image" content={imageUrl} key="ogimage" />
-      <meta
-        property="og:site_name"
-        content={"Fovero Digital Technologies"}
-        key="ogsitename"
-      />
-      <meta property="og:title" content={titleView} key="ogtitle" />
-      <meta property="og:description" content={description} key="ogdesc" />
-      <link rel="icon" href="/img/logo/Fovero Technologies Favicon.png" />
+      <link rel="icon" href="/img/favicon.png" />
     </Head>
   );
 };

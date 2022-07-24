@@ -8,3 +8,10 @@ export const Capitalize = (data: string): string => {
     return data;
   }
 };
+
+export const convertHMS = (timeString:string):number => {
+  const numberArray = timeString.split(":");
+  const seconds:number = Number(numberArray[0])*3600 + Number(numberArray[1])+60 + (+Number(numberArray[2]));
+  return seconds;
+
+}

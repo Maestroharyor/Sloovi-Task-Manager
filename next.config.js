@@ -11,6 +11,9 @@ const nextConfig = {
     locales: ["en"],
     defaultLocale: "en",
   },
+   images: {
+    domains: ['www.gravatar.com'],
+  },
 }
 
 module.exports = nextConfig

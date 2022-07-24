@@ -33,6 +33,7 @@ type Props = {
 };
 
 const Sidebar = ({ auth, user }: Props) => {
+  console.log(user);
   const toast = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -60,13 +61,13 @@ const Sidebar = ({ auth, user }: Props) => {
           <div className="inline-flex justify-between items-center gap-2 bg-gray-900 text-white py-4 px-5">
             <div>
               <p className="text-lg font-medium mb-0.5 text-gray-100">
-                User name
+                {user?.name ? user.name : "Welcome"}
               </p>
-              <p className="">Admin</p>
+              <p className="">{user?.role_name ? user.role_name : "Admin"}</p>
             </div>
             <Image
               alt=""
-              src={"/img/avatar.png"}
+              src={user?.icon ? user?.icon : "/img/avatar.png"}
               width={50}
               height={50}
               className="rounded-full"
