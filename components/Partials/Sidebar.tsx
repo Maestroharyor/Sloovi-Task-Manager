@@ -18,6 +18,7 @@ import {
 // Data and Functions
 import { authData, userData } from "../../data/dataTypes";
 import { logOutSuccess } from "../../store/auth/action";
+import { hideTask } from "../../store/addtask/action";
 
 const sidebarLinks = [
   {
@@ -33,7 +34,6 @@ type Props = {
 };
 
 const Sidebar = ({ auth, user }: Props) => {
-  console.log(user);
   const toast = useToast();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -49,6 +49,7 @@ const Sidebar = ({ auth, user }: Props) => {
       isClosable: true,
       position: "top",
     });
+    dispatch(hideTask());
     setTimeout(() => {
       dispatch(logOutSuccess());
       router.push("/");

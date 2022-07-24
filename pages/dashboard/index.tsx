@@ -47,7 +47,7 @@ const Dashboard = ({ auth, user, addtask }: Props) => {
       .then((response) => {
         console.log(response.data);
         if (response.data.code === 200) {
-          dispatch(addUser(response.data.results.data[0]));
+          dispatch(addUser(response.data.results.data[1]));
         }
       })
       .catch((error) => {
@@ -108,7 +108,7 @@ const Dashboard = ({ auth, user, addtask }: Props) => {
         </div>
 
         {taskError && (
-          <p className="text-2xl text-red-500 text-center">{taskError}</p>
+          <p className="text-2xl text-red-500 text-center mb-3">{taskError}</p>
         )}
 
         {!tasksLoading && !tasks.length ? (

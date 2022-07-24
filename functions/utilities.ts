@@ -11,7 +11,8 @@ export const Capitalize = (data: string): string => {
 
 export const convertHMS = (timeString:string):number => {
   const numberArray = timeString.split(":");
-  const seconds:number = Number(numberArray[0])*3600 + Number(numberArray[1])+60 + (+Number(numberArray[2]));
+  const seconds:number = Number(Number(numberArray[0])*3600 + numberArray[1]+60 + (+numberArray[2]));
+  // const seconds:number = arr[0]*3600+arr[1]*60+(+arr[2]);
   return seconds;
 
 }

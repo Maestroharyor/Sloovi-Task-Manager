@@ -13,18 +13,23 @@ import {
   InputGroup,
   Tooltip,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { DatePicker, TimePicker } from "antd";
 import type { DatePickerProps, TimePickerProps } from "antd";
 
 // Data and Functions
-import { addTaskData } from "../../data/dataTypes";
+import { addTaskData, authData, userData } from "../../data/dataTypes";
 import { Capitalize, convertHMS } from "../../functions/utilities";
 import { hideTask } from "../../store/addtask/action";
 
-type Props = {};
+type Props = {
+  user?: userData;
+  auth?: authData;
+};
 
-const TaskInput = ({}: Props) => {
+const TaskInput = ({ user, auth }: Props) => {
+  const toast = useToast();
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -35,21 +40,73 @@ const TaskInput = ({}: Props) => {
   const addTask = (e: FormEvent) => {
     e.preventDefault();
 
-    setLoading(true);
+    if (!task_msg) {
+      toast({
+        title: "Enter the task message",
+        status: "error",
+        isClosable: true,
+        position: "top",
+      });
+    }
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+    if (!task_date) {
+      toast({
+        title: "Select the task date",
+        status: "error",
+        isClosable: true,
+        position: "top",
+      });
+    }
+    if (task_time === null) {
+      toast({
+        title: "Select the task time",
+        status: "error",
+        isClosable: true,
+        position: "top",
+      });
+    }
+
+    if (task_date && task_time !== null && task_msg && !loading) {
+      setLoading(true);
+
+      const body = {
+        assigned_user: user?.id,
+        task_date,
+        task_time,
+        is_completed: 0,
+        time_zone: task_time,
+        task_msg,
+      };
+
+      axios
+        .post(
+          `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${auth?.company_id}`,
+          body
+        )
+        .then((response) => {
+          setLoading(false);
+          console.log(response);
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.log(error);
+          toast({
+            title: error.response.data.message,
+            status: "error",
+            isClosable: true,
+            position: "top",
+          });
+        });
+    }
   };
 
   const onDateChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(`${date}`);
-    setTaskDate(`${date}`);
+    setTaskDate(`${dateString}`);
   };
 
   const onTimeChange: TimePickerProps["onChange"] = (time, timeString) => {
-    const timeInSeconds = convertHMS(`${time}`);
-    console.log(timeInSeconds);
+    const timeInSeconds = convertHMS(`${timeString}`);
+
     setTaskTime(timeInSeconds);
   };
   return (
@@ -135,4 +192,4 @@ const mapStateToProps = (state: any) => {
   return state;
 };
 
-export default connect<addTaskData>(mapStateToProps)(TaskInput);
+export default connect<addTaskData, userData>(mapStateToProps)(TaskInput);
