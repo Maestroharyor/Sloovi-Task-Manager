@@ -1,10 +1,9 @@
 import { FormEvent, useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import axios from "axios";
-import moment from "moment";
 
 // Components
-import { FaEdit, FaPlus, FaTrashAlt, FaTasks } from "react-icons/fa";
+import { FaPlus, FaTasks } from "react-icons/fa";
 import {
   FormControl,
   FormLabel,
@@ -20,15 +19,16 @@ import type { DatePickerProps, TimePickerProps } from "antd";
 
 // Data and Functions
 import { addTaskData, authData, userData } from "../../data/dataTypes";
-import { Capitalize, convertHMS } from "../../functions/utilities";
+import { convertHMS } from "../../functions/utilities";
 import { hideTask } from "../../store/addtask/action";
 
 type Props = {
   user?: userData;
   auth?: authData;
+  refreshTasks: () => void;
 };
 
-const TaskInput = ({ user, auth }: Props) => {
+const TaskInput = ({ user, auth, refreshTasks }: Props) => {
   const toast = useToast();
   const dispatch = useDispatch();
 
@@ -36,6 +36,8 @@ const TaskInput = ({ user, auth }: Props) => {
   const [task_msg, setTaskMsg] = useState("");
   const [task_date, setTaskDate] = useState("");
   const [task_time, setTaskTime] = useState<number | null>(null);
+
+  // Function to add a task
 
   const addTask = (e: FormEvent) => {
     e.preventDefault();
@@ -81,15 +83,30 @@ const TaskInput = ({ user, auth }: Props) => {
       axios
         .post(
           `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${auth?.company_id}`,
-          body
+          JSON.stringify(body),
+          {
+            headers: {
+              Authorization: `Bearer ${auth?.token}`,
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
         )
         .then((response) => {
           setLoading(false);
-          console.log(response);
+          if (response.data.code === 200 || response.data.code === 201) {
+            toast({
+              title: response.data.message,
+              status: "success",
+              isClosable: true,
+              position: "top",
+            });
+            refreshTasks();
+            dispatch(hideTask());
+          }
         })
         .catch((error) => {
           setLoading(false);
-          console.log(error);
           toast({
             title: error.response.data.message,
             status: "error",

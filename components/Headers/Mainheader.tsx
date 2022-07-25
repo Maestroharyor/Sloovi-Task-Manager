@@ -42,7 +42,7 @@ const MainHeader = ({ auth }: Props) => {
               </a>
             </Link>
           ) : (
-            <Link href={"/auth/login"}>
+            <Link href={"/dashboard"}>
               <a className="font-bold inline-block px-3 py-2 bg-slate-500 hover:bg-slate-600 text-white hover:text-white transition duration-300 ease-in-out rounded text-xl inline-flex gap-2 items-center">
                 <FaTachometerAlt />
                 <span>Dashboard</span>

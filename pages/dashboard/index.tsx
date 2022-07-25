@@ -45,14 +45,11 @@ const Dashboard = ({ auth, user, addtask }: Props) => {
         }
       )
       .then((response) => {
-        console.log(response.data);
         if (response.data.code === 200) {
-          dispatch(addUser(response.data.results.data[1]));
+          dispatch(addUser(response.data.results.data[0]));
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 
   const getTasks = async () => {
@@ -69,7 +66,6 @@ const Dashboard = ({ auth, user, addtask }: Props) => {
           }
         )
         .then((response) => {
-          console.log(response.data);
           setTasksLoading(false);
 
           if (response.data.code !== 200) {
@@ -85,9 +81,40 @@ const Dashboard = ({ auth, user, addtask }: Props) => {
           }
         })
         .catch((error) => {
-          console.log(error);
           setTasksLoading(false);
         });
+    }
+  };
+
+  const refreshTasks = async () => {
+    setTaskError("");
+    if (!tasksLoading) {
+      // setTasksLoading(true);
+      axios
+        .get(
+          `https://stage.api.sloovi.com/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${auth.company_id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${auth.token}`,
+            },
+          }
+        )
+        .then((response) => {
+          // setTasksLoading(false);
+
+          if (response.data.code !== 200) {
+            toast({
+              title: response.data.message,
+              status: "error",
+              isClosable: true,
+              position: "top",
+            });
+            setTaskError(response.data.message);
+          } else {
+            setTasks(response.data.results);
+          }
+        })
+        .catch((error) => {});
     }
   };
 
@@ -117,7 +144,9 @@ const Dashboard = ({ auth, user, addtask }: Props) => {
           </div>
         ) : null}
 
-        {addtask.visible ? <TaskInput /> : null}
+        {addtask.visible && !tasksLoading ? (
+          <TaskInput refreshTasks={refreshTasks} />
+        ) : null}
 
         {tasksLoading && (
           <div className="flex flex-col gap-7 mb-7">
@@ -131,7 +160,12 @@ const Dashboard = ({ auth, user, addtask }: Props) => {
 
         <div className="flex flex-col gap-7">
           {tasks.map((task, index) => (
-            <TaskComponent key={task.id} task={task} index={index} />
+            <TaskComponent
+              key={task.id}
+              task={task}
+              index={index}
+              refreshTasks={refreshTasks}
+            />
           ))}
         </div>
       </div>
