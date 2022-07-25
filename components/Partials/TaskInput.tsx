@@ -129,13 +129,8 @@ const TaskInput = ({ user, auth, refreshTasks }: Props) => {
   return (
     <div className="flex flex-col border border-gray-300 mt-6 mb-5">
       {/* Task Header */}
-      <div className="inline-flex justify-between items-center bg-gray-200 border border-gray-300 px-2 py-0">
-        <p className="text-xl">Add New Task</p>
-        <Tooltip hasArrow label="Add New Task" bg="black" color="white">
-          <button className="border-l border-gray-300 h-full text-gray-600 py-3 pl-2">
-            <FaPlus />
-          </button>
-        </Tooltip>
+      <div className="inline-flex justify-start items-center bg-gray-200 border border-gray-300 px-2 py-0">
+        <p className="text-xl py-1">Add New Task</p>
       </div>
 
       {/* Task Body */}

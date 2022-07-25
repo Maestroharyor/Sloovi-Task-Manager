@@ -135,6 +135,7 @@ const TaskComponent = ({
         status: "loading",
         isClosable: true,
         position: "top",
+        duration: 2,
       });
       axios
         .delete(
